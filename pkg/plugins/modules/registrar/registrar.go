@@ -7,6 +7,7 @@ import (
 	"github.com/weibaohui/k8m/pkg/plugins/modules/eventhandler"
 	"github.com/weibaohui/k8m/pkg/plugins/modules/gatewayapi"
 	"github.com/weibaohui/k8m/pkg/plugins/modules/gllog"
+	"github.com/weibaohui/k8m/pkg/plugins/modules/harbor"
 	"github.com/weibaohui/k8m/pkg/plugins/modules/heartbeat"
 	"github.com/weibaohui/k8m/pkg/plugins/modules/helm"
 	"github.com/weibaohui/k8m/pkg/plugins/modules/inspection"
@@ -122,6 +123,11 @@ func init() {
 			klog.V(6).Infof("注册yaml-editor插件失败: %v", err)
 		} else {
 			klog.V(6).Infof("注册yaml-editor插件成功")
+		}
+		if err := m.Register(harbor.Metadata); err != nil {
+			klog.V(6).Infof("注册harbor插件失败: %v", err)
+		} else {
+			klog.V(6).Infof("注册harbor插件成功")
 		}
 	})
 }
