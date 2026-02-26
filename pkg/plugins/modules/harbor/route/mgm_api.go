@@ -15,6 +15,7 @@ func RegisterManagementRoutes(mrg chi.Router) {
 	mrg.Get(prefix+"/registries", response.Adapter(controller.ListRegistries))
 	mrg.Post(prefix+"/registries", response.Adapter(controller.CreateRegistry))
 	mrg.Put(prefix+"/registries/{id}", response.Adapter(controller.UpdateRegistry))
+	mrg.Post(prefix+"/registries/{id}", response.Adapter(controller.UpdateRegistry)) // 同时支持POST
 	mrg.Delete(prefix+"/registries/{id}", response.Adapter(controller.DeleteRegistry))
 	mrg.Post(prefix+"/registries/{id}/test", response.Adapter(controller.TestRegistryConnection))
 

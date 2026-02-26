@@ -15,7 +15,7 @@
           "source": {
             "method": "get",
             "url": "/mgm/plugins/harbor/registries",
-            "adaptor": "return {options: payload.data.map(item => ({label: item.name, value: item.id}))}"
+            "adaptor": "return {options: (payload.data.rows || []).map(item => ({label: item.name, value: item.id}))}"
           },
           "value": "${registry_id}"
         },
