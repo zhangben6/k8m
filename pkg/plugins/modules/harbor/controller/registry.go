@@ -122,6 +122,11 @@ func DeleteRegistry(c *response.Context) {
 // TestRegistryConnection 测试Harbor仓库连接
 func TestRegistryConnection(c *response.Context) {
 	idStr := c.Param("id")
+	if idStr == "" {
+		amis.WriteJsonError(c, fmt.Errorf("仓库ID不能为空"))
+		return
+	}
+	
 	id64, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
 		amis.WriteJsonError(c, err)

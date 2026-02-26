@@ -131,7 +131,7 @@
               "url": "/mgm/plugins/harbor/registries/${id}/test"
             },
             "confirmText": "确认测试连接？",
-            "visibleOn": "this.id"
+            "visibleOn": "typeof this.id !== 'undefined' && this.id !== null && this.id !== ''"
           },
           {
             "type": "button",

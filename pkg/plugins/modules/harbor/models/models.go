@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"github.com/weibaohui/k8m/internal/dao"
 	"gorm.io/gorm"
 	"k8s.io/klog/v2"
@@ -8,7 +10,10 @@ import (
 
 // HarborRegistry Harbor仓库配置
 type HarborRegistry struct {
-	gorm.Model
+	ID          uint      `json:"id" gorm:"primarykey"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+	DeletedAt   gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index"`
 	Name        string `json:"name" gorm:"uniqueIndex;not null;comment:仓库名称"`
 	URL         string `json:"url" gorm:"not null;comment:Harbor地址"`
 	Username    string `json:"username" gorm:"comment:用户名"`
