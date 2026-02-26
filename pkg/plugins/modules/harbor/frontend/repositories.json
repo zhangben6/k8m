@@ -6,13 +6,17 @@
       "type": "form",
       "mode": "inline",
       "wrapWithPanel": false,
+      "initApi": {
+        "method": "get",
+        "url": "/mgm/plugins/harbor/registries",
+        "adaptor": "const rows = payload.data.rows || []; const urlParams = new URLSearchParams(window.location.hash.split('?')[1] || ''); const registryId = urlParams.get('registry_id') || (rows.length > 0 ? rows[0].id : ''); const projectName = urlParams.get('project_name') || ''; return {data: {registry_id: registryId, project_name: projectName}};"
+      },
       "body": [
         {
           "type": "select",
           "name": "registry_id",
           "label": "选择仓库",
           "required": true,
-          "selectFirst": true,
           "source": {
             "method": "get",
             "url": "/mgm/plugins/harbor/registries",
