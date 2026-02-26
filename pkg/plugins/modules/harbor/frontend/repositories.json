@@ -12,12 +12,22 @@
           "name": "registry_id",
           "label": "选择仓库",
           "required": true,
+          "selectFirst": true,
           "source": {
             "method": "get",
             "url": "/mgm/plugins/harbor/registries",
             "adaptor": "return {options: (payload.data.rows || []).map(item => ({label: item.name, value: item.id}))}"
           },
-          "value": "${registry_id}"
+          "onEvent": {
+            "change": {
+              "actions": [
+                {
+                  "actionType": "reload",
+                  "componentId": "repositories-crud"
+                }
+              ]
+            }
+          }
         },
         {
           "type": "input-text",
@@ -25,13 +35,23 @@
           "label": "项目名称",
           "required": true,
           "placeholder": "请输入项目名称",
-          "value": "${project_name}"
+          "onEvent": {
+            "change": {
+              "actions": [
+                {
+                  "actionType": "reload",
+                  "componentId": "repositories-crud"
+                }
+              ]
+            }
+          }
         }
       ],
       "actions": []
     },
     {
       "type": "crud",
+      "id": "repositories-crud",
       "api": {
         "method": "get",
         "url": "/mgm/plugins/harbor/repositories?registry_id=${registry_id}&project_name=${project_name}",

@@ -12,18 +12,29 @@
           "name": "registry_id",
           "label": "选择仓库",
           "required": true,
+          "selectFirst": true,
           "source": {
             "method": "get",
             "url": "/mgm/plugins/harbor/registries",
             "adaptor": "return {options: (payload.data.rows || []).map(item => ({label: item.name, value: item.id}))}"
           },
-          "value": "${registry_id}"
+          "onEvent": {
+            "change": {
+              "actions": [
+                {
+                  "actionType": "reload",
+                  "componentId": "projects-crud"
+                }
+              ]
+            }
+          }
         }
       ],
       "actions": []
     },
     {
       "type": "crud",
+      "id": "projects-crud",
       "api": {
         "method": "get",
         "url": "/mgm/plugins/harbor/projects?registry_id=${registry_id}",
