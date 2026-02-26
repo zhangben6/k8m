@@ -8,12 +8,11 @@ import (
 )
 
 // RegisterClusterRoutes 注册Harbor插件的集群相关路由
+// Harbor 功能与 K8s 集群无关，这里保留空实现
 func RegisterClusterRoutes(crg chi.Router) {
-	prefix := "/plugins/" + modules.PluginNameHarbor
-
-	// Harbor项目和镜像相关API
-	crg.Get(prefix+"/projects", response.Adapter(controller.ListProjects))
-	crg.Get(prefix+"/repositories", response.Adapter(controller.ListRepositories))
-	crg.Get(prefix+"/artifacts", response.Adapter(controller.ListArtifacts))
-	crg.Delete(prefix+"/artifacts", response.Adapter(controller.DeleteArtifact))
+	// Harbor 镜像仓库管理不依赖 K8s 集群
+	// 所有功能都在 ManagementRouter 中实现
+	_ = modules.PluginNameHarbor
+	_ = controller.ListProjects
+	_ = response.Adapter
 }
