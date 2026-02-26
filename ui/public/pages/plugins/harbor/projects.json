@@ -1,0 +1,71 @@
+{
+  "type": "page",
+  "title": "Harbor项目列表",
+  "body": [
+    {
+      "type": "form",
+      "mode": "inline",
+      "wrapWithPanel": false,
+      "body": [
+        {
+          "type": "select",
+          "name": "registry_id",
+          "label": "选择仓库",
+          "required": true,
+          "source": {
+            "method": "get",
+            "url": "/mgm/plugins/harbor/registries",
+            "adaptor": "return {options: payload.data.map(item => ({label: item.name, value: item.id}))}"
+          },
+          "value": "${registry_id}"
+        }
+      ],
+      "actions": []
+    },
+    {
+      "type": "crud",
+      "api": {
+        "method": "get",
+        "url": "/k8s/cluster/${cluster}/plugins/harbor/projects?registry_id=${registry_id}",
+        "requestAdaptor": "if(!api.query.registry_id) return null; return api;"
+      },
+      "syncLocation": false,
+      "perPage": 20,
+      "columns": [
+        {
+          "name": "name",
+          "label": "项目名称",
+          "searchable": true
+        },
+        {
+          "name": "repo_count",
+          "label": "仓库数量",
+          "type": "number"
+        },
+        {
+          "name": "chart_count",
+          "label": "Chart数量",
+          "type": "number"
+        },
+        {
+          "name": "creation_time",
+          "label": "创建时间",
+          "type": "datetime"
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "buttons": [
+            {
+              "type": "button",
+              "label": "查看仓库",
+              "level": "link",
+              "actionType": "link",
+              "link": "#/repositories?registry_id=${registry_id}&project_name=${name}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

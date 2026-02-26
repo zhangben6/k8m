@@ -1,0 +1,141 @@
+{
+  "type": "page",
+  "title": "Harbor镜像仓库",
+  "body": [
+    {
+      "type": "form",
+      "mode": "inline",
+      "wrapWithPanel": false,
+      "body": [
+        {
+          "type": "select",
+          "name": "registry_id",
+          "label": "选择仓库",
+          "required": true,
+          "source": {
+            "method": "get",
+            "url": "/mgm/plugins/harbor/registries",
+            "adaptor": "return {options: payload.data.map(item => ({label: item.name, value: item.id}))}"
+          },
+          "value": "${registry_id}"
+        },
+        {
+          "type": "input-text",
+          "name": "project_name",
+          "label": "项目名称",
+          "required": true,
+          "placeholder": "请输入项目名称",
+          "value": "${project_name}"
+        }
+      ],
+      "actions": []
+    },
+    {
+      "type": "crud",
+      "api": {
+        "method": "get",
+        "url": "/k8s/cluster/${cluster}/plugins/harbor/repositories?registry_id=${registry_id}&project_name=${project_name}",
+        "requestAdaptor": "if(!api.query.registry_id || !api.query.project_name) return null; return api;"
+      },
+      "syncLocation": false,
+      "perPage": 20,
+      "columns": [
+        {
+          "name": "name",
+          "label": "仓库名称",
+          "searchable": true
+        },
+        {
+          "name": "artifact_count",
+          "label": "镜像数量",
+          "type": "number"
+        },
+        {
+          "name": "pull_count",
+          "label": "拉取次数",
+          "type": "number"
+        },
+        {
+          "name": "creation_time",
+          "label": "创建时间",
+          "type": "datetime"
+        },
+        {
+          "name": "update_time",
+          "label": "更新时间",
+          "type": "datetime"
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "buttons": [
+            {
+              "type": "button",
+              "label": "查看镜像",
+              "level": "link",
+              "actionType": "dialog",
+              "dialog": {
+                "title": "镜像列表 - ${name}",
+                "size": "xl",
+                "body": {
+                  "type": "crud",
+                  "api": {
+                    "method": "get",
+                    "url": "/k8s/cluster/${cluster}/plugins/harbor/artifacts?registry_id=${registry_id}&project_name=${project_name}&repo_name=${name}"
+                  },
+                  "syncLocation": false,
+                  "perPage": 20,
+                  "columns": [
+                    {
+                      "name": "digest",
+                      "label": "摘要",
+                      "type": "text",
+                      "copyable": true
+                    },
+                    {
+                      "name": "tags",
+                      "label": "标签",
+                      "type": "each",
+                      "items": {
+                        "type": "tag",
+                        "label": "${name}"
+                      }
+                    },
+                    {
+                      "name": "size",
+                      "label": "大小",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "push_time",
+                      "label": "推送时间",
+                      "type": "datetime"
+                    },
+                    {
+                      "type": "operation",
+                      "label": "操作",
+                      "buttons": [
+                        {
+                          "type": "button",
+                          "label": "删除",
+                          "level": "link",
+                          "className": "text-danger",
+                          "actionType": "ajax",
+                          "api": {
+                            "method": "delete",
+                            "url": "/k8s/cluster/${cluster}/plugins/harbor/artifacts?registry_id=${registry_id}&project_name=${project_name}&repo_name=${name}&digest=${digest}"
+                          },
+                          "confirmText": "确认删除该镜像？此操作不可恢复！"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

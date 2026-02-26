@@ -1,0 +1,210 @@
+{
+  "type": "page",
+  "title": "Harbor仓库管理",
+  "body": {
+    "type": "crud",
+    "api": {
+      "method": "get",
+      "url": "/mgm/plugins/harbor/registries"
+    },
+    "syncLocation": false,
+    "headerToolbar": [
+      "bulkActions",
+      {
+        "type": "button",
+        "label": "新增仓库",
+        "actionType": "dialog",
+        "level": "primary",
+        "dialog": {
+          "title": "新增Harbor仓库",
+          "size": "lg",
+          "body": {
+            "type": "form",
+            "api": {
+              "method": "post",
+              "url": "/mgm/plugins/harbor/registries"
+            },
+            "body": [
+              {
+                "type": "input-text",
+                "name": "name",
+                "label": "仓库名称",
+                "required": true,
+                "placeholder": "请输入仓库名称"
+              },
+              {
+                "type": "input-text",
+                "name": "url",
+                "label": "Harbor地址",
+                "required": true,
+                "placeholder": "https://harbor.example.com",
+                "validations": {
+                  "isUrl": true
+                }
+              },
+              {
+                "type": "input-text",
+                "name": "username",
+                "label": "用户名",
+                "required": true,
+                "placeholder": "请输入用户名"
+              },
+              {
+                "type": "input-password",
+                "name": "password",
+                "label": "密码",
+                "required": true,
+                "placeholder": "请输入密码"
+              },
+              {
+                "type": "switch",
+                "name": "insecure",
+                "label": "跳过TLS验证",
+                "value": false
+              },
+              {
+                "type": "switch",
+                "name": "is_default",
+                "label": "设为默认仓库",
+                "value": false
+              },
+              {
+                "type": "textarea",
+                "name": "description",
+                "label": "描述",
+                "placeholder": "请输入描述信息"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "columns": [
+      {
+        "name": "name",
+        "label": "仓库名称",
+        "searchable": true
+      },
+      {
+        "name": "url",
+        "label": "Harbor地址",
+        "type": "link",
+        "href": "${url}",
+        "blank": true
+      },
+      {
+        "name": "username",
+        "label": "用户名"
+      },
+      {
+        "name": "is_default",
+        "label": "默认仓库",
+        "type": "status",
+        "map": {
+          "true": {
+            "label": "是",
+            "icon": "fa fa-check",
+            "status": "success"
+          },
+          "false": {
+            "label": "否",
+            "icon": "fa fa-times",
+            "status": "default"
+          }
+        }
+      },
+      {
+        "name": "description",
+        "label": "描述"
+      },
+      {
+        "type": "operation",
+        "label": "操作",
+        "buttons": [
+          {
+            "type": "button",
+            "label": "测试连接",
+            "level": "link",
+            "actionType": "ajax",
+            "api": {
+              "method": "post",
+              "url": "/mgm/plugins/harbor/registries/${id}/test"
+            },
+            "confirmText": "确认测试连接？",
+            "visibleOn": "typeof this.id !== 'undefined' && this.id !== null && this.id !== ''"
+          },
+          {
+            "type": "button",
+            "label": "编辑",
+            "level": "link",
+            "actionType": "dialog",
+            "dialog": {
+              "title": "编辑Harbor仓库",
+              "size": "lg",
+              "body": {
+                "type": "form",
+                "api": {
+                  "method": "put",
+                  "url": "/mgm/plugins/harbor/registries/${id}"
+                },
+                "body": [
+                  {
+                    "type": "input-text",
+                    "name": "name",
+                    "label": "仓库名称",
+                    "required": true
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "url",
+                    "label": "Harbor地址",
+                    "required": true
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "username",
+                    "label": "用户名",
+                    "required": true
+                  },
+                  {
+                    "type": "input-password",
+                    "name": "password",
+                    "label": "密码",
+                    "placeholder": "不修改请留空"
+                  },
+                  {
+                    "type": "switch",
+                    "name": "insecure",
+                    "label": "跳过TLS验证"
+                  },
+                  {
+                    "type": "switch",
+                    "name": "is_default",
+                    "label": "设为默认仓库"
+                  },
+                  {
+                    "type": "textarea",
+                    "name": "description",
+                    "label": "描述"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "button",
+            "label": "删除",
+            "level": "link",
+            "className": "text-danger",
+            "actionType": "ajax",
+            "api": {
+              "method": "delete",
+              "url": "/mgm/plugins/harbor/registries/${id}"
+            },
+            "confirmText": "确认删除该仓库配置？"
+          }
+        ]
+      }
+    ]
+  }
+}
