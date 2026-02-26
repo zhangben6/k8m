@@ -26,7 +26,7 @@
       "type": "crud",
       "api": {
         "method": "get",
-        "url": "/k8s/cluster/${cluster}/plugins/harbor/projects?registry_id=${registry_id}",
+        "url": "/mgm/plugins/harbor/projects?registry_id=${registry_id}",
         "requestAdaptor": "if(!api.query.registry_id) return null; return api;"
       },
       "syncLocation": false,

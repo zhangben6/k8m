@@ -17,4 +17,10 @@ func RegisterManagementRoutes(mrg chi.Router) {
 	mrg.Put(prefix+"/registries/{id}", response.Adapter(controller.UpdateRegistry))
 	mrg.Delete(prefix+"/registries/{id}", response.Adapter(controller.DeleteRegistry))
 	mrg.Post(prefix+"/registries/{id}/test", response.Adapter(controller.TestRegistryConnection))
+
+	// Harbor项目和镜像相关API（不依赖K8s集群）
+	mrg.Get(prefix+"/projects", response.Adapter(controller.ListProjects))
+	mrg.Get(prefix+"/repositories", response.Adapter(controller.ListRepositories))
+	mrg.Get(prefix+"/artifacts", response.Adapter(controller.ListArtifacts))
+	mrg.Delete(prefix+"/artifacts", response.Adapter(controller.DeleteArtifact))
 }
