@@ -130,7 +130,8 @@
               "method": "post",
               "url": "/mgm/plugins/harbor/registries/${id}/test"
             },
-            "confirmText": "确认测试连接？"
+            "confirmText": "确认测试连接？",
+            "visibleOn": "this.id"
           },
           {
             "type": "button",
