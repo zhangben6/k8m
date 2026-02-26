@@ -1,8 +1,10 @@
 FROM node:18-alpine AS frontend-builder
+WORKDIR /app
+COPY ui/package.json ui/pnpm-lock.yaml ./ui/
+RUN cd ui && npm install -g pnpm && pnpm install
+COPY ui/ ./ui/
+COPY pkg/plugins/modules/ ./pkg/plugins/modules/
 WORKDIR /app/ui
-COPY ui/package.json ui/pnpm-lock.yaml ./
-RUN npm install -g pnpm && pnpm install
-COPY ui/ ./
 RUN pnpm run build
 
 FROM golang:alpine AS backend-builder

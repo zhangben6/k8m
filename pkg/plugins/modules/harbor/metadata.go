@@ -28,7 +28,7 @@ var Metadata = plugins.Module{
 					Title:       "仓库管理",
 					Icon:        "fa-solid fa-server",
 					EventType:   "custom",
-					CustomEvent: `() => loadJsonPage("/plugins/harbor/registries")`,
+					CustomEvent: `() => window.location.hash = "#/plugins/harbor/registries"`,
 					Order:       1,
 				},
 				{
@@ -36,7 +36,7 @@ var Metadata = plugins.Module{
 					Title:       "项目列表",
 					Icon:        "fa-solid fa-folder",
 					EventType:   "custom",
-					CustomEvent: `() => loadJsonPage("/plugins/harbor/projects")`,
+					CustomEvent: `() => window.location.hash = "#/plugins/harbor/projects"`,
 					Order:       2,
 				},
 				{
@@ -44,7 +44,7 @@ var Metadata = plugins.Module{
 					Title:       "镜像仓库",
 					Icon:        "fa-solid fa-box",
 					EventType:   "custom",
-					CustomEvent: `() => loadJsonPage("/plugins/harbor/repositories")`,
+					CustomEvent: `() => window.location.hash = "#/plugins/harbor/repositories"`,
 					Order:       3,
 				},
 			},
